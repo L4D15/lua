@@ -9,6 +9,11 @@ cmake_minimum_required ( VERSION 2.8 )
 include ( cmake/dist.cmake )
 
 ## CONFIGURATION
+# Specify build output directories
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
 # Default configuration (we assume POSIX by default)
 set ( LUA_PATH "LUA_PATH" CACHE STRING "Environment variable to use as package.path." )
 set ( LUA_CPATH "LUA_CPATH" CACHE STRING "Environment variable to use as package.cpath." )
@@ -106,7 +111,7 @@ endif ( )
 
 ## SOURCES
 # Generate luaconf.h
-configure_file ( src/luaconf.h.in ${CMAKE_CURRENT_BINARY_DIR}/luaconf.h )
+configure_file ( src/luaconf.h.in ${CMAKE_BINARY_DIR}/luaconf.h )
 
 # Sources and headers
 include_directories ( src ${CMAKE_CURRENT_BINARY_DIR} )
@@ -134,24 +139,24 @@ if ( LUA_BUILD_AS_DLL )
   set_target_properties ( liblua PROPERTIES COMPILE_DEFINITIONS LUA_BUILD_AS_DLL )
 endif ()
 
-add_executable ( lua ${SRC_LUA} src/lua.rc )
-target_link_libraries ( lua liblua )
+#add_executable ( lua ${SRC_LUA} src/lua.rc )
+#target_link_libraries ( lua liblua )
 
-add_executable ( luac ${SRC_CORE} ${SRC_LIB} ${SRC_LUAC} src/luac.rc )
-target_link_libraries ( luac ${LIBS} )
+#add_executable ( luac ${SRC_CORE} ${SRC_LIB} ${SRC_LUAC} src/luac.rc )
+#target_link_libraries ( luac ${LIBS} )
 
 # On windows a variant of the lua interpreter without console output needs to be built
 if ( LUA_BUILD_WLUA )
-  add_executable ( wlua WIN32 src/wmain.c ${SRC_LUA} src/lua.rc )
-  target_link_libraries ( wlua liblua )
-  install_executable ( wlua )
+  #add_executable ( wlua WIN32 src/wmain.c ${SRC_LUA} src/lua.rc )
+  #target_link_libraries ( wlua liblua )
+  #install_executable ( wlua )
 endif ( )
 
-install_executable ( lua luac )
-install_library ( liblua )
-install_data ( README.md )
+#install_executable ( lua luac )
+#install_library ( liblua )
+#install_data ( README.md )
 #install_lua_module ( strict etc/strict.lua )
 install_header ( src/lua.h src/lualib.h src/lauxlib.h ${CMAKE_CURRENT_BINARY_DIR}/luaconf.h )
-install_doc ( doc/ )
-install_foo ( etc/ )
+#install_doc ( doc/ )
+#install_foo ( etc/ )
 #install_test ( test/ )
